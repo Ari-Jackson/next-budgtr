@@ -9,7 +9,7 @@ export const transactionRouter = createTRPCRouter({
   getSingle: publicProcedure.input(z.string()).query(({ ctx, input }) => {
     return ctx.prisma.transaction.findUnique({
       where: {
-        id: `${input}`,
+        id: input,
       },
     });
   }),
