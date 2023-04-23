@@ -11,15 +11,15 @@ datasource db {
     relationMode = "prisma"
 }
 
-model Transaction {
+model LoggedTransaction {
     transactionId String  @id @default(cuid())
     title         String  @db.VarChar(255)
     from          String  @db.VarChar(255)
     category      String? @db.VarChar(500)
     amount        Decimal @db.Decimal(7, 2)
     deposit       Boolean @default(false)
-    authorid      String?
     date          BigInt
+    authorid      String
 
     @@index([authorid])
 }
