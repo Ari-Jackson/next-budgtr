@@ -18,7 +18,7 @@ model LoggedTransaction {
     category      String? @db.VarChar(500)
     amount        Decimal @db.Decimal(7, 2)
     deposit       Boolean @default(false)
-    date          BigInt
+    date          Int
     authorid      String
 
     @@index([authorid])
