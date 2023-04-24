@@ -8,7 +8,7 @@ const newLogShape = z.object({
   category: z.string(),
   amount: z.number().nonnegative(),
   deposit: z.boolean(),
-  date: z.bigint(),
+  date: z.number(),
 });
 
 export const loggedTransactionRouter = createTRPCRouter({
