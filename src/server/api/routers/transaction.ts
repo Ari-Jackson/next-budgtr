@@ -26,6 +26,27 @@ export const loggedTransactionRouter = createTRPCRouter({
       },
     });
   }),
+  getTotal: privateProcedure.query(async ({ ctx }) => {
+    const deposits = await ctx.prisma.loggedTransaction.aggregate({
+      _sum: {
+        amount: true,
+      },
+      where: {
+        authorid: ctx.userId,
+        deposit: true,
+      },
+    });
+    const withdrawl = await ctx.prisma.loggedTransaction.aggregate({
+      _sum: {
+        amount: true,
+      },
+      where: {
+        authorid: ctx.userId,
+        deposit: false,
+      },
+    });
+    return { deposits, withdrawl };
+  }),
   createLog: privateProcedure
     .input(newLogShape)
     .mutation(async ({ ctx, input }) => {
