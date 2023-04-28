@@ -1,3 +1,4 @@
+import { Prisma } from "@prisma/client";
 import { z } from "zod";
 
 import { createTRPCRouter, privateProcedure } from "~/server/api/trpc";
@@ -51,7 +52,11 @@ export const loggedTransactionRouter = createTRPCRouter({
     .input(newLogShape)
     .mutation(async ({ ctx, input }) => {
       return ctx.prisma.loggedTransaction.create({
-        data: { ...input, authorid: ctx.userId },
+        data: {
+          ...input,
+          amount: new Prisma.Decimal(input.amount),
+          authorid: ctx.userId,
+        },
       });
     }),
   updateLog: privateProcedure
@@ -61,7 +66,12 @@ export const loggedTransactionRouter = createTRPCRouter({
         where: {
           transactionId: input.transactionId,
         },
-        data: input,
+        data: {
+          ...input.content,
+          transactionId: input.transactionId,
+          amount: new Prisma.Decimal(input.content.amount),
+          authorid: ctx.userId,
+        },
       });
     }),
   deleteLog: privateProcedure.input(z.string()).mutation(({ ctx, input }) => {

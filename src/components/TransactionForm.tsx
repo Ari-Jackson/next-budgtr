@@ -2,13 +2,14 @@ import dayjs from "dayjs";
 import { useState } from "react";
 import type { newTransactionType } from "~/utils/types";
 const defaultFormValues = {
-  name: "",
+  title: "",
   amount: 0,
-  date: dayjs().valueOf(),
+  date: dayjs().unix(),
   from: "",
   category: "",
   deposit: false,
 };
+
 type TransactionFormProps = {
   onSubmit: (transaction: newTransactionType) => void;
   initialValues?: newTransactionType;
@@ -29,7 +30,7 @@ export default function TransactionForm({
     } else if (e.target.id === "date") {
       setTransaction((old) => ({
         ...old,
-        [e.target.id]: dayjs(e.target.value).valueOf(),
+        [e.target.id]: dayjs(e.target.value).unix(),
       }));
     } else if (e.target.id === "deposit") {
       setTransaction((old) => ({
@@ -48,7 +49,6 @@ export default function TransactionForm({
     e.preventDefault();
     onSubmit(transaction);
   };
-  console.log(transaction.deposit);
 
   return (
     <form
@@ -57,16 +57,16 @@ export default function TransactionForm({
     >
       <label
         className="mb-2 block text-sm font-bold text-gray-700"
-        htmlFor="name"
+        htmlFor="title"
       >
         Name
       </label>
       <input
         type="text"
-        id="name"
+        id="title"
         className="rounded-md px-4 py-2"
         onChange={handleChange}
-        value={transaction.name}
+        value={transaction.title}
       />
       <label
         className="mb-2 block text-sm font-bold text-gray-700"
@@ -92,7 +92,7 @@ export default function TransactionForm({
         id="date"
         className="rounded-md px-4 py-2"
         onChange={handleChange}
-        value={dayjs(transaction.date).format("YYYY-MM-DD")}
+        value={dayjs.unix(transaction.date).format("YYYY-MM-DD")}
       />
       <label
         className="mb-2 block text-sm font-bold text-gray-700"

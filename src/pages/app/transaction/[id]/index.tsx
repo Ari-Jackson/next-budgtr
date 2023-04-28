@@ -17,9 +17,16 @@ export default function ShowById() {
     isLoading: transactionIsLoading,
     isError,
   } = api.loggedTransaction.getLog.useQuery(id);
-  const { mutate, isLoading } = api.loggedTransaction.deleteLog.useMutation();
 
-  const handleClick = (e: React.MouseEvent<HTMLButtonElement>) => {};
+  const {
+    mutate: removeLog,
+    isLoading: deleteLoading,
+    isSuccess: deleteIsSucessful,
+  } = api.loggedTransaction.deleteLog.useMutation();
+
+  const handleClick = (e: React.MouseEvent<HTMLButtonElement>) => {
+    removeLog(id);
+  };
 
   if (transactionIsLoading) {
     return (
@@ -35,6 +42,10 @@ export default function ShowById() {
     return <div>There was an error!</div>;
   }
 
+  if (deleteIsSucessful) {
+    // eslint-disable-next-line @typescript-eslint/no-floating-promises
+    router.push("/app");
+  }
   return (
     <main className="flex min-h-screen flex-col items-center bg-gray-100 pt-28">
       <div className=" min-h-[18rem] w-4/5 max-w-7xl rounded-md bg-gray-200 p-5 shadow sm:w-3/5">
@@ -73,7 +84,7 @@ export default function ShowById() {
             className="rounded-md border bg-red-500 p-2 px-4 text-white hover:border-red-500 hover:bg-white hover:text-red-500 sm:px-6"
             onClick={handleClick}
           >
-            {isLoading ? "Delete" : "Loading..."}
+            {!deleteLoading ? "Delete" : "Loading..."}
           </button>
         </div>
       </div>
