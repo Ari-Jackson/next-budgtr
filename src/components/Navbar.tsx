@@ -1,32 +1,22 @@
 import { UserButton } from "@clerk/nextjs";
+import { type Decimal } from "@prisma/client/runtime";
 import Link from "next/link";
+import { api } from "~/utils/api";
 
-type datatype = {
-  deposits: {
-    _sum: {
-      amount: string | null;
-    };
-  };
-  withdrawl: {
-    _sum: {
-      amount: string | null;
-    };
-  };
-};
+export default function Navbar() {
+  const { data } = api.loggedTransaction.getTotal.useQuery();
 
-export default function Navbar({ data }: { data: datatype }) {
-  const depositSum = Number(data.deposits._sum.amount);
-  const withdrawSum = Number(data.withdrawl._sum.amount);
-
+  const sum =
+    Number(data?.deposits._sum.amount) - Number(data?.withdrawl._sum.amount);
   return (
     <nav className="flex min-w-full justify-between bg-sky-600 p-4 text-white">
-      <Link href="/">
+      <Link href="/app">
         <h1 className="text-3xl">Budgtr</h1>{" "}
       </Link>
       <div className="flex w-1/4 items-center justify-between">
         <div>
           <h1>Current Balance:</h1>
-          <h1 className="text-xl"> ${(depositSum - withdrawSum).toFixed(2)}</h1>
+          <h1 className="text-xl"> ${sum.toFixed(2)}</h1>
         </div>
 
         <Link href="/app/new">
