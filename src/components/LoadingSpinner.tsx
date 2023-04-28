@@ -1,7 +1,7 @@
 const LoadingSpinner = () => {
   return (
     <>
-      <main className="min-w-screen flex min-h-screen items-center justify-center">
+      <div className="flex min-h-screen w-screen items-center justify-center">
         <div aria-label="Loading..." role="status">
           <svg className="h-12 w-12 animate-spin" viewBox="3 3 18 18">
             <path
@@ -14,7 +14,7 @@ const LoadingSpinner = () => {
             ></path>
           </svg>
         </div>
-      </main>
+      </div>
     </>
   );
 };
